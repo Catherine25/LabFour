@@ -15,6 +15,19 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
+            Controller c = new Controller();
+
+            c.FileExists("SA.txt");
+            c.FileExists("SB.txt");
+            c.FileExists("SC.txt");
+
+            c.GetFromFile("SA.txt");
+            c.GetFromFile("SB.txt");
+            c.GetFromFile("SC.txt");
+
+            c.ToSD();
+
+            c.SaveResult();
         }
     }
 }
