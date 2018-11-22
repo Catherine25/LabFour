@@ -3,17 +3,17 @@ using System.IO;
 
 namespace WindowsFormsApp1
 {
-    class Controller
+    static class Controller
     {
         //constructor
-        public Controller()
+        static Controller()
         {
             FilesPath = @"c:\New Folder\";
             Random = new Random();
         }
 
         //checking if file exists
-        public void FileExists(string name)
+        static public void FileExists(string name)
         {
             FileInfo fileInf = new FileInfo(FilesPath + name);
             if (!fileInf.Exists)
@@ -21,11 +21,11 @@ namespace WindowsFormsApp1
         }
 
         //getting from file by adding name
-        public void GetFromFile(string name)
+        static public void GetFromFile(string name)
         {
             using (StreamReader sr = new StreamReader(FilesPath + name, System.Text.Encoding.Default))
             {
-                string file = sr.ReadToEnd();
+                toShow = sr.ReadToEnd();
                 if (name == "SA.txt")
                     SA = File.ReadAllText(FilesPath + name).Split(' ');
                 if (name == "SB.txt")
@@ -36,7 +36,7 @@ namespace WindowsFormsApp1
         }
 
         //moves all elements to SD
-        public void ToSD()
+        static public void ToSD()
         {
             //finding min size of three files
             SortedIndex = Math.Min(Math.Min(SA.Length, SB.Length), SC.Length);
@@ -58,10 +58,11 @@ namespace WindowsFormsApp1
                 if (DifferentSize() == 1) //two are passed
                     LastInOne();
             }
+            toShow = SD;
         }
 
         //fill SA SB SC
-        void FillFile(string name)
+        static void FillFile(string name)
         {
             using (StreamWriter sw = new StreamWriter(FilesPath + name, false, System.Text.Encoding.Default))
             {
@@ -74,7 +75,7 @@ namespace WindowsFormsApp1
         }
 
         //Counts how many arrays need to be passed
-        int DifferentSize()
+        static int DifferentSize()
         {
             int[] IsPassed = new int[3] { 0, 0, 0 };
             if (SA.Length == SortedIndex)
@@ -87,7 +88,7 @@ namespace WindowsFormsApp1
         }
 
         //moves 2 arrays' data in SD
-        void TwoInOne()
+        static void TwoInOne()
         {
             int NextStep = 0;
             if (SortedIndex == SA.Length)
@@ -124,10 +125,11 @@ namespace WindowsFormsApp1
                 }
             }
             SortedIndex = NextStep;
+            toShow = SD;
         }
 
         //moves last array's data to SD
-        void LastInOne()
+        static void LastInOne()
         {
             int Last = Math.Max(Math.Max(SA.Length, SB.Length), SC.Length);
             if (Last == SA.Length)
@@ -149,19 +151,21 @@ namespace WindowsFormsApp1
                     SD += " ";
                 }
             SortedIndex = Last;
+            toShow = SD;
         }
 
         //saves result to SD
-        public void SaveResult()
+        static public void SaveResult()
         {
             using (StreamWriter sw = new StreamWriter(FilesPath + "SD.txt", false, System.Text.Encoding.Default))
                 sw.Write(SD); //dispose file
         }
 
         //data
-        string[] SA, SB, SC;
-        int SortedIndex;
-        string SD, FilesPath;
-        Random Random;
+        static public string toShow;
+        static string[] SA, SB, SC;
+        static int SortedIndex;
+        static string SD, FilesPath;
+        static Random Random;
     }
 }
